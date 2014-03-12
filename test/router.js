@@ -36,6 +36,15 @@ describe('router', function () {
    });
 
    describe('simple get requests', function () {
+      
+      it('should allow regex patterns', function (done) {
+         this.pathways.get(/\/test/, function () {
+            assert.equal('/test', this.request.url);
+            done();
+         });
+
+         makeRequest(this.server, 'GET', '/test');
+      });
 
       it('should allow chainable definitions', function (done) {
          var requestCount = 0;
