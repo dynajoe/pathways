@@ -1,6 +1,6 @@
 {
   "name": "pathways",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Simple HTTP RESTful routing.",
   "main": "lib/index.js",
   "scripts": {
@@ -8,6 +8,14 @@
   },
   "author": "Joe Andaverde",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joeandaverde/pathways"
+  },
+  "bugs": {
+    "url": "https://github.com/joeandaverde/pathways/issues"
+  },
+  "homepage": "https://github.com/joeandaverde/pathways",
   "devDependencies": {
     "mocha": "^1.17.1"
   }
