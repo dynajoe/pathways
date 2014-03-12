@@ -4,7 +4,7 @@
   "description": "Simple HTTP RESTful routing.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha test"
+    "test": "./node_modules/.bin/mocha test"
   },
   "author": "Joe Andaverde",
   "license": "MIT",
