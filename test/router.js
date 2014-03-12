@@ -36,6 +36,26 @@ describe('router', function () {
    });
 
    describe('simple get requests', function () {
+
+      it('should allow chainable definitions', function (done) {
+         var requestCount = 0;
+
+         var onRequest = function () {
+            requestCount++;
+
+            if (requestCount == 2) {
+               done();
+            }
+         };
+
+         this.pathways
+            .get('/', onRequest)
+            .get('/test', onRequest);
+
+         makeRequest(this.server, 'GET', '/');
+         makeRequest(this.server, 'GET', '/test');
+      });
+
       it('should route a GET request for /', function (done) {
          this.pathways.get('/', function () {
             done();
