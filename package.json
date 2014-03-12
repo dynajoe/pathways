@@ -1,0 +1,14 @@
+{
+  "name": "pathways",
+  "version": "0.0.1",
+  "description": "Simple HTTP RESTful routing.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha test"
+  },
+  "author": "Joe Andaverde",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^1.17.1"
+  }
+}
