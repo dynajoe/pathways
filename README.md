@@ -11,7 +11,7 @@ var http = require('http');
 
 var pathways = Pathways();
 
-http.createServer(pathways);
+var server = http.createServer(pathways);
 
 pathways
 .get('/', function () {
@@ -22,4 +22,6 @@ pathways
    this.response.write('Hello ' + id + '!');
    this.response.end();
 });
+
+server.listen(3000);
 ```
