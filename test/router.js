@@ -33,6 +33,16 @@ describe('router', function () {
       });
    });
 
+   describe('star as a wildcard for non regex patterns', function () {
+      it('should respond to any url with *', function (done) {
+         this.pathways.get('*', function () {
+            done();
+         });
+
+         makeRequest(this.server, 'GET', '/Anything');
+      });
+   });
+
    describe('when a route is declared to accept any method', function () {
       it('should respond to any method', function (done) {
          var methods = ['get', 'put', 'post', 'delete'];
@@ -76,7 +86,6 @@ describe('router', function () {
    });
 
    describe('simple get requests', function () {
-
       it('should allow regex patterns', function (done) {
          this.pathways.get(/\/test/, function () {
             assert.equal('/test', this.request.url);
@@ -189,6 +198,8 @@ function makeRequest (server, method, path, callback) {
    server.emit('request', req, res);
 
    res.once('end', function () {
-      callback(res);
+      if (callback) {
+         callback(res);
+      }
    });
 }
