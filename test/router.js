@@ -180,6 +180,56 @@ describe('router', function () {
    });
 });
 
+describe('route based on a function', function () {
+   beforeEach(function () {
+      this.pathways = pathways();
+      this.server = http.createServer(this.pathways);
+   });
+
+   it('should have the request available', function (done) {
+      this.pathways.get(function (cb) {
+         assert(this.request);
+         assert.equal(this.request.url, '/test');
+         cb(false);
+         done();
+      }, function () { });
+
+      makeRequest(this.server, 'GET', '/test');
+   });
+
+   it('should respect the result of the callback when a request can be handled', function (done) {
+      var handled = false;
+
+      this.pathways.get(function (cb) {
+         cb(true);
+      }, function () {
+         handled = true;
+         this.response.end();
+      });
+
+      makeRequest(this.server, 'GET', '/', function () {
+         assert(handled);
+         done();
+      });
+   });
+
+   it('should respect the result of the callback when a request cannot be handled', function (done) {
+      var handled = false;
+
+      this.pathways.get(function (cb) {
+         cb(false);
+      }, function () {
+         handled = true;
+         this.response.end();
+      });
+
+      makeRequest(this.server, 'GET', '/', function () {
+         assert(!handled, 'This callback should not be invoked.');
+         done();
+      });
+   });
+});
+
 function makeRequest (server, method, path, callback) {
    var req = {
       method: method,
