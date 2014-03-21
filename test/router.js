@@ -26,6 +26,13 @@ describe('router', function () {
       }, this);
    });
 
+   it('should respond with a 404 status code if a request is not handled', function (done) {
+      makeRequest(this.server, 'GET', '/test', function (res) {
+         assert.equal(404, res.statusCode);
+         done();
+      });
+   });
+
    describe('when a route is declared to accept any method', function () {
       it('should respond to any method', function (done) {
          var methods = ['get', 'put', 'post', 'delete'];
