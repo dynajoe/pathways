@@ -3,11 +3,44 @@ var Stream = require('stream');
 var pathways = require('../lib/index');
 var assert = require('assert');
 
-describe('router', function () {
+describe('multiple routers', function () {
+   beforeEach(function () {
+      this.routerA = pathways();
+      this.routerB = pathways();
+   });
 
+   it('should not have the same route collection', function () {
+      assert.notEqual(this.routerA.routes, this.routerB.routes);
+   });
+});
+
+describe('router', function () {
    beforeEach(function () {
       this.pathways = pathways();
       this.server = http.createServer(this.pathways);
+   });
+
+   it('should have the expected methods', function () {
+      ['get', 'put', 'post', 'delete', 'any'].forEach(function (m) {
+         assert.equal('function', typeof this.pathways[m]);
+      }, this);
+   });
+
+   describe('when a route is declared to accept any method', function () {
+      it('should respond to any method', function (done) {
+         var methods = ['get', 'put', 'post', 'delete'];
+         var requestCount = 0;
+         this.pathways.any('/test', function () {
+            requestCount++;
+            if (requestCount === methods.length) {
+               done();
+            }
+         });
+
+         methods.forEach(function (m) {
+            makeRequest(this.server, m.toUpperCase(), '/test');
+         }, this);
+      });
    });
 
    describe('simple get requests with parameters', function () {
@@ -36,7 +69,7 @@ describe('router', function () {
    });
 
    describe('simple get requests', function () {
-      
+
       it('should allow regex patterns', function (done) {
          this.pathways.get(/\/test/, function () {
             assert.equal('/test', this.request.url);
@@ -99,6 +132,36 @@ describe('router', function () {
 
    });
 
+   describe('simple post requests', function () {
+
+      it('should allow regex patterns', function (done) {
+         this.pathways.post(/\/test/, function () {
+            assert.equal('/test', this.request.url);
+            done();
+         });
+
+         makeRequest(this.server, 'POST', '/test');
+      });
+
+      it('should allow simple parameterized patterns', function (done) {
+         this.pathways.post('/test/:id', function (id) {
+            assert.equal('123', id);
+            done();
+         });
+
+         makeRequest(this.server, 'POST', '/test/123');
+      });
+
+      it('should have the request object', function (done) {
+         this.pathways.post('/test', function () {
+            assert.equal('/test', this.request.url);
+            assert.equal('POST', this.request.method);
+            done();
+         });
+
+         makeRequest(this.server, 'POST', '/test');
+      });
+   });
 });
 
 function makeRequest (server, method, path, callback) {
