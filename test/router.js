@@ -95,6 +95,23 @@ describe('router', function () {
          makeRequest(this.server, 'GET', '/test');
       });
 
+      it('should match the appropriate string', function (done) {
+         this.pathways.get('/', function () {
+            assert(false, 'this should not be hit');
+         });
+
+         var handled = false;
+         this.pathways.get('/collection/:id', function (id) {
+            handled = true;
+            this.response.end();
+         });
+
+         makeRequest(this.server, 'GET', '/collection/123', function () {
+            assert(handled);
+            done();
+         });
+      });
+
       it('should allow chainable definitions', function (done) {
          var requestCount = 0;
 
