@@ -1,6 +1,6 @@
 var Pathways = require('../lib/index');
-var http = require('http');
 
+var http = require('http');
 var pathways = Pathways();
 var server = http.createServer(pathways);
 
@@ -37,7 +37,7 @@ pathways
    this.request.on('end', function () {
       console.log(id, data);
       this.response.end();
-   });
+   }.bind(this));
 });
 
 server.listen(3000);

@@ -40,7 +40,7 @@ pathways
    this.request.on('end', function () {
       console.log(id, data);
       this.response.end();
-   });
+   }.bind(this));
 });
 
 server.listen(3000);
@@ -84,7 +84,7 @@ pathways
    this.request.on('end', function () {
       console.log(id, data);
       this.response.end();
-   });
+   }.bind(this));
 });
 
 server.listen(3000);
@@ -140,7 +140,7 @@ pathways
    this.request.on('end', function () {
       console.log(id, data);
       this.response.end();
-   });
+   }.bind(this));
 });
 
 server.listen(3000);
