@@ -83,6 +83,30 @@ describe('router', function () {
 
          makeRequest(this.server, 'GET', '/collection/' + expectedId + '/' + expectedResource);
       });
+
+      it ('should map parameters in any order', function (done) {
+         var expectedId = '123';
+         var expectedResource = 'details';
+
+         this.pathways.get('/collection/:id/:resource', function handler (resource, id) {
+            assert.equal(expectedId, id);
+            assert.equal(expectedResource, resource);
+            done();
+         });
+
+         makeRequest(this.server, 'GET', '/collection/' + expectedId + '/' + expectedResource);
+      });
+
+      it ('should map parameters when the function is named', function (done) {
+         var expectedId = '123';
+
+         this.pathways.get('/collection/:id', function handler (id) {
+            assert.equal(expectedId, id);
+            done();
+         });
+
+         makeRequest(this.server, 'GET', '/collection/' + expectedId);
+      });
    });
 
    describe('simple get requests', function () {
